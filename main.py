@@ -59,7 +59,12 @@ def text_cleaning(a):
 def gaussian_model(f1, res):
 	trans = HashingVectorizer(analyzer=text_cleaning).fit(f1)
 	bow = trans.transform(f1).toarray()
-	model = GaussianNB().partial_fit(bow, res, classes=np.unique(res))
+	try:
+		with open('g_model.sav', 'rb') as f:
+			m = pickle.load(f)
+			model = m.partial_fit(bow,res)
+	except:
+		model = GaussianNB().partial_fit(bow, res, classes=np.unique(res))
 	
 	#Saving in pickle
 	with open('g_model.sav', 'wb') as f:
@@ -68,7 +73,12 @@ def gaussian_model(f1, res):
 def perceptron_model(f0, res):
 	trans = HashingVectorizer(analyzer=text_cleaning).fit(f0)
 	bow = trans.transform(f0).toarray()
-	model = Perceptron().partial_fit(bow, res, classes=np.unique(res))
+	try:
+		with open('p_model.sav', 'rb') as f:
+			m = pickle.load(f)
+			model = m.partial_fit(bow,res)
+	except:
+		model = Perceptron().partial_fit(bow, res, classes=np.unique(res))
 	
 	#Saving in pickle
 	with open('p_model.sav', 'wb') as f:
@@ -77,7 +87,12 @@ def perceptron_model(f0, res):
 def sgdclassifier_model(f01, res):
 	trans = HashingVectorizer(analyzer=text_cleaning).fit(f01)
 	bow = trans.transform(f01).toarray()
-	model = SGDClassifier().partial_fit(bow, res, classes=np.unique(res))
+	try:
+		with open('sgd_model.sav', 'rb') as f:
+			m = pickle.load(f)
+			model = m.partial_fit(bow,res)
+	except:
+		model = SGDClassifier().partial_fit(bow, res, classes=np.unique(res))
 	
 	#Saving in pickle
 	with open('sgd_model.sav', 'wb') as f:
