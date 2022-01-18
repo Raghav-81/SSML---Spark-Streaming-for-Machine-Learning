@@ -56,7 +56,12 @@ def Kmeans(f0, res):
 	#print(features)
 	#print("----------------")
 	k=2
-	model = MiniBatchKMeans(n_clusters = k, random_state = 0).partial_fit(features)
+	try:
+		with open('km_model.sav', 'rb') as f:
+			m = pickle.load(f)
+			model = m.partial_fit(features)
+	except:
+		model = MiniBatchKMeans(n_clusters = k, random_state = 0).partial_fit(features)
 	cor = model.labels_
 	'''
 	cor1 = np.array(list(map(convert, cor)))
@@ -81,7 +86,6 @@ def Kmeans(f0, res):
 	#Saving in pickle
 	with open('km_model.sav', 'wb') as f:
 		pickle.dump(model, f)
-	
 	
 
 
